@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -12,16 +13,21 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::create([
-            'name' => 'Admin Loja',
-            'email' => 'admin@barganha.com',
-            'password' => bcrypt('admin123'),
-        ]);
+        // This will only create the user if the email doesn't exist
+        User::firstOrCreate(
+            ['email' => 'admin@barganha.com'],
+            [
+                'name' => 'Admin Loja',
+                'password' => Hash::make('admin123'),
+            ]
+        );
 
-        \App\Models\User::create([
-            'name' => 'Usuario Comum',
-            'email' => 'user@teste.com',
-            'password' => bcrypt('user123'),
-        ]);
+        User::firstOrCreate(
+            ['email' => 'user@teste.com'],
+            [
+                'name' => 'Usuario Comum',
+                'password' => Hash::make('user123'),
+            ]
+        );
     }
 }
